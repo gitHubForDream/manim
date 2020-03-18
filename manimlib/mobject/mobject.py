@@ -34,6 +34,7 @@ class Mobject(Container):
         "name": None,
         "dim": 3,
         "target": None,
+        "plot_depth": 0,
     }
 
     def __init__(self, **kwargs):
@@ -1119,6 +1120,19 @@ class Mobject(Container):
                       "for a Mobject with no points"
             caller_name = sys._getframe(1).f_code.co_name
             raise Exception(message.format(caller_name))
+            
+    def set_plot_depth(self, plot_depth_value):
+        self.plot_depth = plot_depth_value
+        return self
+
+    def get_plot_depth(self):
+        return self.plot_depth
+
+    def set_plot_depth_by_z(self):
+        # to update the plot_depth by the value of Z coordinate
+        z_value = self.get_center()[-1]
+        self.set_plot_depth(z_value)
+        return self
 
 
 class Group(Mobject):
