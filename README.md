@@ -14,6 +14,15 @@ Manim是一个用于制作视频的动画引擎。它用编程的方式创建精
 
 对于一些MK成员编写的常用类与函数，和制作视频的源代码，可以去旁边的存储库[manim_sandbox](https://github.com/manim-kindergarten/manim_sandbox/)中查看
 
+## 注意：这里是`online_latex`分支
+在使用`TextMobject`,`TexMobject`或相关使用LaTeX的部分，默认使用`https://latex.codecogs.com/svg.latex?`这个api来从LaTeX代码渲染出svg文件。所以可以不必在本机中安装LaTeX发行版(虽然不推荐这样做)
+
+如果在此分支中仍要使用本机LaTeX渲染，使用如下代码
+```python
+tex = TexMobject("string", online=False)
+text = TextMobject("string", online=False)
+```
+
 ## 教程及文档(中文)
 
 ### 中文安装指南

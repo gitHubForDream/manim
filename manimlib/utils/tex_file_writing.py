@@ -97,3 +97,24 @@ def dvi_to_svg(dvi_file, regen_if_exists=False):
         ]
         os.system(" ".join(commands))
     return result
+
+
+def tex_to_svg_file_online(expression, web_site):
+    result = os.path.join(
+        consts.ONLINE_TEX_DIR,
+        tex_hash(expression, "")
+    ) + ".svg"
+    if not os.path.exists(result):
+        print("Writing \"%s\" to %s (using online render)" % (
+            "".join(expression), result
+        ))
+        url = web_site + parse.quote(expression)
+        try:
+            response = request.urlopen(url)
+            svg_file = response.read()
+            svg_file = svg_file.decode("utf-8")
+            with open(result, "w", encoding="utf-8") as outfile:
+                outfile.write(svg_file)
+        except error.URLError:
+            raise Exception("No internet connectivity. Aborting latex download.")
+    return result

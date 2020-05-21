@@ -10,6 +10,7 @@ from manimlib.mobject.types.vectorized_mobject import VectorizedPoint
 from manimlib.utils.config_ops import digest_config
 from manimlib.utils.strings import split_string_list_to_isolate_substrings
 from manimlib.utils.tex_file_writing import tex_to_svg_file
+from manimlib.utils.tex_file_writing import tex_to_svg_file_online
 
 
 TEX_MOB_SCALE_FACTOR = 0.05
@@ -33,16 +34,29 @@ class SingleStringTexMobject(SVGMobject):
         "height": None,
         "organize_left_to_right": False,
         "alignment": "",
+        "web_site": "https://latex.codecogs.com/svg.latex?",
     }
 
-    def __init__(self, tex_string, **kwargs):
+    def __init__(self, tex_string, online=True, **kwargs):
         digest_config(self, kwargs)
         assert(isinstance(tex_string, str))
         self.tex_string = tex_string
-        file_name = tex_to_svg_file(
-            self.get_modified_expression(tex_string),
-            self.template_tex_file_body
-        )
+        if not online:
+            file_name = tex_to_svg_file(
+                self.get_modified_expression(tex_string),
+                self.template_tex_file_body
+            )
+        else:
+            if self.template_tex_file_body == TEMPLATE_TEXT_FILE_BODY:
+                lines = tex_string.split("\\\\")
+                tex_string = ""
+                for line in lines[:-1]:
+                    tex_string = tex_string + "\\text{" + line + "}\\\\"
+                tex_string = tex_string + "\\text{" + lines[-1] + "}"
+            file_name = tex_to_svg_file_online(
+                self.get_modified_expression(tex_string),
+                web_site = self.web_site
+            )
         SVGMobject.__init__(self, file_name=file_name, **kwargs)
         if self.height is None:
             self.scale(TEX_MOB_SCALE_FACTOR)
@@ -140,12 +154,13 @@ class TexMobject(SingleStringTexMobject):
         "tex_to_color_map": {},
     }
 
-    def __init__(self, *tex_strings, **kwargs):
+    def __init__(self, *tex_strings, online=True, **kwargs):
         digest_config(self, kwargs)
         tex_strings = self.break_up_tex_strings(tex_strings)
         self.tex_strings = tex_strings
+        self.online = online
         SingleStringTexMobject.__init__(
-            self, self.arg_separator.join(tex_strings), **kwargs
+            self, self.arg_separator.join(tex_strings), online=online, **kwargs
         )
         self.break_up_by_substrings()
         self.set_color_by_tex_to_color_map(self.tex_to_color_map)
@@ -178,7 +193,7 @@ class TexMobject(SingleStringTexMobject):
         config = dict(self.CONFIG)
         config["alignment"] = ""
         for tex_string in self.tex_strings:
-            sub_tex_mob = SingleStringTexMobject(tex_string, **config)
+            sub_tex_mob = SingleStringTexMobject(tex_string, online=self.online, **config)
             num_submobs = len(sub_tex_mob.submobjects)
             new_index = curr_index + num_submobs
             if num_submobs == 0:
