@@ -13,5 +13,6 @@ manim.sublime-workspace
 build/
 dist/
 manim.egg-info/
+assets/logo.py
 
 /media_dir.txt
