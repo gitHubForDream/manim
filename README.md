@@ -38,6 +38,12 @@ Manim是一个用于制作视频的动画引擎。它用编程的方式创建精
 - [manim_sandbox中的wiki（未完成，仅一部分）](https://github.com/manim-kindergarten/manim_sandbox/wiki)
 - [manim常见问题v2.2](https://github.com/manim-kindergarten/manim_sandbox/blob/master/documents/manim%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98v2.2.pdf)
 
+## 关于分支
+- `ver.MK` 是默认分支，即整理后的代码
+- `master` 是整理之前，但是增加了一些基础性修改的代码
+- `shaders` 是使用moderngl渲染的分支，基本和[3b1b/manim](https://github.com/3b1b/manim)中保持一致，但是bug多
+- `online_latex` 是增加了使用在线api渲染LaTeX公式功能的分支，适合无法成功安装LaTeX发行版的人使用
+
 ## 关于更改(相对于[3b1b/manim](https://github.com/3b1b/manim))
 1. 删除了一些针对travis，pypi的文件
 2. 删除了在使用manim时无影响的英文文档源码
@@ -49,6 +55,8 @@ Manim是一个用于制作视频的动画引擎。它用编程的方式创建精
     - 还原了Grant觉得不好的gif导出
     - 修复了`SVGMobject`的默认`stroke_width=0`
     - 修复了在Windows下可能会出现的路径问题
+    - 更改了`Rotate`和`Rotating`(和shaders版保持一致，而且这样更好用)
+    - 让Axes的label可以更改颜色等属性(通过`number_config`)
 
 这个库也会和[3b1b/manim](https://github.com/3b1b/manim)保持更新
 
