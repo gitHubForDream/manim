@@ -2,6 +2,7 @@ import os
 import hashlib
 
 from pathlib import Path
+from urllib import parse, request, error
 
 from manimlib.constants import TEX_TEXT_TO_REPLACE
 from manimlib.constants import TEX_USE_CTEX
