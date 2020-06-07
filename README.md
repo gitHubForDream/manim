@@ -30,7 +30,7 @@ Manim是一个用于制作视频的动画引擎。它用编程的方式创建精
 - [pdcxs转载自Elteoremadebeethoven的英文教程](https://www.bilibili.com/video/av64023740)(因为YouTube在中国大陆无法访问)
 - [cai-hust的中文教程](https://github.com/cai-hust/manim-tutorial-CN)
 
-在使用中针对你可能会出现的常见问题，这里有一个文档：[manim常见问题v2.2](https://github.com/manim-kindergarten/manim_sandbox/blob/master/documents/manim%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98v2.2.pdf)，如果无法在线打开预览，[点此下载](https://github.com/manim-kindergarten/manim_sandbox/blob/master/documents/manim%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98v2.2.pdf?raw=True)<br>
+在使用中针对你可能会出现的常见问题，这里有一个文档：[manim常见问题v2.3](https://github.com/manim-kindergarten/manim_sandbox/blob/master/documents/manim%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98v2.3.pdf)，如果无法在线打开预览，[点此下载](https://github.com/manim-kindergarten/manim_sandbox/blob/master/documents/manim%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98v2.3.pdf?raw=True)<br>
 如果你想通过视频代码来学习，你可以尝试运行[manim_sandbox](https://github.com/manim-kindergarten/manim_sandbox/)中[videos](https://github.com/manim-kindergarten/manim_sandbox/tree/master/videos)和[demo](https://github.com/manim-kindergarten/manim_sandbox/tree/master/demo)文件夹中的代码
 
 ### 中文文档
