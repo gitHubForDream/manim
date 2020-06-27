@@ -3,7 +3,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
 [![manim_sandbox](https://img.shields.io/badge/mk-manim__sandbox-brightgreen.svg)](https://github.com/manim-kindergarten/manim_sandbox/)
 [![tutorial](https://img.shields.io/badge/tutorial-on_bilibili-ff69b4.svg)](https://space.bilibili.com/171431343/favlist?fid=947158443)
-[![Documentation](https://img.shields.io/badge/docs-manim__document__zh-blue.svg)](https://manim-kindergarten.github.io/manim_document_zh/)
+[![Documentation](https://img.shields.io/badge/docs-manim__document__zh-blue.svg)](https://manim.ml/)
 ![QQ](https://img.shields.io/badge/QQ-862671480-red.svg?style=flat)
 
 原README文件: [3b1b/manim](https://github.com/3b1b/manim/blob/master/README.md)
@@ -34,9 +34,9 @@ Manim是一个用于制作视频的动画引擎。它用编程的方式创建精
 如果你想通过视频代码来学习，你可以尝试运行[manim_sandbox](https://github.com/manim-kindergarten/manim_sandbox/)中[videos](https://github.com/manim-kindergarten/manim_sandbox/tree/master/videos)和[demo](https://github.com/manim-kindergarten/manim_sandbox/tree/master/demo)文件夹中的代码
 
 ### 中文文档
-- [Tridu整理、翻译自英文文档的中文文档](https://manim-kindergarten.github.io/manim_document_zh/)
+- [manim_kindergarten整理的中文文档（完善中）](https://manim.ml/)
 - [manim_sandbox中的wiki（未完成，仅一部分）](https://github.com/manim-kindergarten/manim_sandbox/wiki)
-- [manim常见问题v2.2](https://github.com/manim-kindergarten/manim_sandbox/blob/master/documents/manim%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98v2.2.pdf)
+- [manim常见问题v2.3](https://github.com/manim-kindergarten/manim_sandbox/blob/master/documents/manim%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98v2.3.pdf)
 
 ## 关于分支
 - `ver.MK` 是默认分支，即整理后的代码
