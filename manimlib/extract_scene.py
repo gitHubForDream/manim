@@ -146,6 +146,7 @@ def main(config):
             "start_at_animation_number",
             "end_at_animation_number",
             "leave_progress_bars",
+            "enable_caching",
         ]
     ])
 

@@ -119,6 +119,16 @@ def parse_cli():
             "--media_dir",
             help="directory to write media",
         )
+        parser.add_argument(
+            "--clean_cache",
+            action="store_true",
+            help="Clean the cache files in partial movie directory"
+        )
+        parser.add_argument(
+            "--disable_caching",
+            action="store_false",
+            help="Disable caching"
+        )
         video_group = parser.add_mutually_exclusive_group()
         video_group.add_argument(
             "--video_dir",
@@ -169,6 +179,7 @@ def get_configuration(args):
         "movie_file_extension": ".mov" if args.transparent else ".mp4",
         "file_name": args.file_name,
         "input_file_path": args.file,
+        "clean_cache": args.clean_cache,
     }
     if hasattr(module, "OUTPUT_DIRECTORY"):
         file_writer_config["output_directory"] = module.OUTPUT_DIRECTORY
@@ -185,6 +196,7 @@ def get_configuration(args):
         "end_at_animation_number": None,
         "sound": args.sound,
         "leave_progress_bars": args.leave_progress_bars,
+        "enable_caching": args.disable_caching,
         "media_dir": args.media_dir,
         "video_dir": args.video_dir,
         "video_output_dir": args.video_output_dir,

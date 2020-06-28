@@ -48,6 +48,7 @@ class SceneFileWriter(object):
         "file_name": None,
         "input_file_path": "",  # ??
         "output_directory": None,
+        "clean_cache": False,
     }
 
     def __init__(self, scene, **kwargs):
@@ -56,6 +57,8 @@ class SceneFileWriter(object):
         self.stream_lock = False
         self.init_output_directories()
         self.init_audio()
+        if self.clean_cache:
+            self.cleaning_cache()
 
     # Output directories and files
     def init_output_directories(self):
@@ -442,6 +445,15 @@ class SceneFileWriter(object):
             return False
         path = os.path.join(self.partial_movie_directory, "{}{}".format(hash_play, self.movie_file_extension))
         return os.path.exists(path)
+    
+    def cleaning_cache(self):
+        if hasattr(self, "partial_movie_directory"):
+            count = 0
+            for file in os.listdir(self.partial_movie_directory):
+                if file.endswith(self.movie_file_extension):
+                    os.remove(os.path.join(self.partial_movie_directory, file))
+                    count += 1
+        print(f"Cleaned {count} cached movie files in {self.partial_movie_directory}")
 
     def combine_movie_files(self):
         """
