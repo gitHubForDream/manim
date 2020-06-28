@@ -14,6 +14,7 @@ from manimlib.container.container import Container
 from manimlib.mobject.mobject import Mobject
 from manimlib.scene.scene_file_writer import SceneFileWriter
 from manimlib.utils.iterables import list_update
+from manimlib.utils.hashing import get_hash_from_play_call, get_hash_from_wait_call
 
 
 class Scene(Container):
@@ -51,6 +52,7 @@ class Scene(Container):
         "start_at_animation_number": None,
         "end_at_animation_number": None,
         "leave_progress_bars": False,
+        "enable_caching": True,
     }
 
     def __init__(self, **kwargs):
@@ -60,6 +62,7 @@ class Scene(Container):
             self, **self.file_writer_config,
         )
 
+        self.play_hashes_list = []
         self.mobjects = []
         # TODO, remove need for foreground mobjects
         self.foreground_mobjects = []
@@ -375,6 +378,16 @@ class Scene(Container):
             values
         ))
         return self
+
+    def add_mobjects_from_animations(self, animations): 
+        curr_mobjects = self.get_mobject_family_members()
+        for animation in animations:
+            # Anything animated that's not already in the
+            # scene gets added to the scene
+            mob = animation.mobject
+            if mob not in curr_mobjects:
+                self.add(mob)
+                curr_mobjects += mob.get_family()
 
     def remove(self, *mobjects):
         """
@@ -821,6 +834,36 @@ class Scene(Container):
                 self.skip_animations = True
                 raise EndSceneEarlyException()
 
+    def handle_caching_play(func): 
+        def wrapper(self, *args, **kwargs): 
+            animations = self.compile_play_args_to_animation_list(
+                *args, **kwargs
+                )
+            # We have to add all the mobjects, because we can have hash-collisions if not.
+            self.add_mobjects_from_animations(animations)
+            mobjects_on_scene = self.get_mobjects() 
+            hash_play = get_hash_from_play_call(animations, mobjects_on_scene)
+            self.play_hashes_list.append(hash_play)
+            if self.enable_caching and self.file_writer.is_already_cached(hash_play): 
+                logger.debug(f'Animation {self.num_plays} : Using cached data (hash : {hash_play})')
+                self.skip_animations = True
+            else: 
+                self.revert_to_original_skipping_status()
+            func(self, *args, **kwargs)
+        return wrapper
+
+    def handle_caching_wait(func): 
+        def wrapper(self, duration=DEFAULT_WAIT_TIME, stop_condition=None):
+            hash_wait = get_hash_from_wait_call(duration, stop_condition, self.get_mobjects())
+            self.play_hashes_list .append(hash_wait)
+            if self.enable_caching and self.file_writer.is_already_cached(hash_wait): 
+                logger.debug(f'Wait {self.num_plays} : Using cached data (hash : {hash_wait})')
+                self.skip_animations = True
+            else : 
+                self.revert_to_original_skipping_status()
+            func(self, duration, stop_condition)
+        return wrapper
+
     def handle_play_like_call(func):
         """
         This method is used internally to wrap the
@@ -862,16 +905,16 @@ class Scene(Container):
             List of involved animations.
 
         """
-        curr_mobjects = self.get_mobject_family_members()
+        # curr_mobjects = self.get_mobject_family_members()
         for animation in animations:
             # Begin animation
             animation.begin()
             # Anything animated that's not already in the
             # scene gets added to the scene
-            mob = animation.mobject
-            if mob not in curr_mobjects:
-                self.add(mob)
-                curr_mobjects += mob.get_family()
+            # mob = animation.mobject
+            # if mob not in curr_mobjects:
+            #     self.add(mob)
+            #     curr_mobjects += mob.get_family()
 
     def progress_through_animations(self, animations):
         """
@@ -922,6 +965,7 @@ class Scene(Container):
         else:
             self.update_mobjects(0)
 
+    @handle_caching_play
     @handle_play_like_call
     def play(self, *args, **kwargs):
         """
@@ -1025,6 +1069,7 @@ class Scene(Container):
             )
         return time_progression
 
+    @handle_caching_wait
     @handle_play_like_call
     def wait(self, duration=DEFAULT_WAIT_TIME, stop_condition=None):
         """
