@@ -845,7 +845,7 @@ class Scene(Container):
             hash_play = get_hash_from_play_call(animations, mobjects_on_scene)
             self.play_hashes_list.append(hash_play)
             if self.enable_caching and self.file_writer.is_already_cached(hash_play): 
-                logger.debug(f'Animation {self.num_plays} : Using cached data (hash : {hash_play})')
+                print(f'Animation {self.num_plays} : Using cached data (hash : {hash_play})')
                 self.skip_animations = True
             else: 
                 self.revert_to_original_skipping_status()
@@ -857,7 +857,7 @@ class Scene(Container):
             hash_wait = get_hash_from_wait_call(duration, stop_condition, self.get_mobjects())
             self.play_hashes_list .append(hash_wait)
             if self.enable_caching and self.file_writer.is_already_cached(hash_wait): 
-                logger.debug(f'Wait {self.num_plays} : Using cached data (hash : {hash_wait})')
+                print(f'Wait {self.num_plays} : Using cached data (hash : {hash_wait})')
                 self.skip_animations = True
             else : 
                 self.revert_to_original_skipping_status()

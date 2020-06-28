@@ -438,7 +438,7 @@ class SceneFileWriter(object):
         )
 
     def is_already_cached(self, hash_play): 
-        if self.save_last_frame:
+        if not self.write_to_movie:
             return False
         path = os.path.join(self.partial_movie_directory, "{}{}".format(hash_play, self.movie_file_extension))
         return os.path.exists(path)
