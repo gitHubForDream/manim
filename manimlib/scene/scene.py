@@ -79,7 +79,7 @@ class Scene(Container):
             pass
         self.tear_down()
         self.manimlib_tear_down()
-        self.file_writer.finish()
+        self.file_writer.finish(self.split_movie_files)
         self.print_end_message()
 
     def manimlib_setup(self):

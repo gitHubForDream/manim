@@ -365,7 +365,7 @@ class SceneFileWriter(object):
             if time_diff < frame_duration:
                 sleep(frame_duration - time_diff)
 
-    def finish(self):
+    def finish(self, split_movie_files):
         """
         Finishes writing to the FFMPEG buffer.
         Combines the partial movie files into the
@@ -376,7 +376,7 @@ class SceneFileWriter(object):
         if self.write_to_movie:
             if hasattr(self, "writing_process"):
                 self.writing_process.terminate()
-            self.combine_movie_files()
+            self.combine_movie_files(split_movie_files)
         if self.save_last_frame:
             self.scene.update_frame(ignore_skipping=True)
             self.save_final_image(self.scene.get_image())
@@ -437,7 +437,7 @@ class SceneFileWriter(object):
             self.partial_movie_file_path,
         )
 
-    def combine_movie_files(self):
+    def combine_movie_files(self, split_movie_files):
         """
         Used internally by Manim to combine the separate
         partial movie files that make up a Scene into a single
@@ -470,7 +470,7 @@ class SceneFileWriter(object):
 
         movie_file_path = self.get_movie_file_path()
 
-        if len(partial_movie_files) == 1:
+        if not split_movie_files or len(partial_movie_files) == 1:
             print("No combination of movie files required")
             shutil.copyfile(partial_movie_files[0], movie_file_path)
             self.print_file_ready_message(movie_file_path)
