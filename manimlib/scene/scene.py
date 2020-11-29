@@ -51,6 +51,7 @@ class Scene(Container):
         "start_at_animation_number": None,
         "end_at_animation_number": None,
         "leave_progress_bars": False,
+        "split_movie_files": False
     }
 
     def __init__(self, **kwargs):
@@ -70,14 +71,20 @@ class Scene(Container):
             random.seed(self.random_seed)
             np.random.seed(self.random_seed)
 
+        self.manimlib_setup()
         self.setup()
         try:
             self.construct()
         except EndSceneEarlyException:
             pass
         self.tear_down()
+        self.manimlib_tear_down()
         self.file_writer.finish()
         self.print_end_message()
+
+    def manimlib_setup(self):
+        if not self.split_movie_files:
+            self.file_writer.begin_animation(True)
 
     def setup(self):
         """
@@ -86,6 +93,10 @@ class Scene(Container):
         involved before the construct method is called.
         """
         pass
+
+    def manimlib_tear_down(self):
+        if not self.split_movie_files:
+            self.file_writer.end_animation(True)
 
     def tear_down(self):
         """
@@ -843,7 +854,7 @@ class Scene(Container):
         """
         def wrapper(self, *args, **kwargs):
             self.update_skipping_status()
-            allow_write = not self.skip_animations
+            allow_write = not self.skip_animations and self.split_movie_files
             self.file_writer.begin_animation(allow_write)
             func(self, *args, **kwargs)
             self.file_writer.end_animation(allow_write)

@@ -468,6 +468,14 @@ class SceneFileWriter(object):
             print("No animations in this scene")
             return
 
+        movie_file_path = self.get_movie_file_path()
+
+        if len(partial_movie_files) == 1:
+            print("No combination of movie files required")
+            shutil.copyfile(partial_movie_files[0], movie_file_path)
+            self.print_file_ready_message(movie_file_path)
+            return
+
         # Write a file partial_file_list.txt containing all
         # partial movie files
         file_list = os.path.join(
@@ -480,7 +488,6 @@ class SceneFileWriter(object):
                     pf_path = pf_path.replace('\\', '/')
                 fp.write("file \'file:{}\'\n".format(pf_path))
 
-        movie_file_path = self.get_movie_file_path()
         commands = [
             FFMPEG_BIN,
             '-y',  # overwrite output file if it exists
